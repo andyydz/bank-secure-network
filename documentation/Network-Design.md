@@ -29,7 +29,7 @@ The physical topology consists of the following devices:
 
 **Overall flow:** end devices connect to the switches; the switches carry their traffic to the router; the router forwards traffic to the required server network or toward the Internet/Cloud.
 
-> The exact port-to-port cabling is shown in the topology diagram (see [Section 11](#11-design-diagram)).
+
 
 ---
 
@@ -101,7 +101,7 @@ Devices in different VLANs cannot communicate with each other at Layer 2. To exc
 
 **Why controlled inter-VLAN communication is required**
 
-VLANs must not be completely isolated, because clients still need access to shared services such as the banking server and the DNS/DHCP server. At the same time, they must not be completely open to one another. Routing all inter-VLAN traffic through a single point makes it possible to **allow the communication that is required and restrict the rest**, which is the purpose of ACL-based access control in this design (see [Section 8](#8-security-oriented-design)).
+VLANs must not be completely isolated, because clients still need access to shared services such as the banking server and the DNS/DHCP server. At the same time, they must not be completely open to one another. Routing all inter-VLAN traffic through a single point makes it possible to **allow the communication that is required and restrict the rest**
 
 ---
 
@@ -170,12 +170,9 @@ A banking environment has requirements that a simple, flat network cannot meet w
 
 ---
 
-## 11. Design Diagram
-
-![Bank Secure Network Topology](./images/network-topology.png)
 
 ---
 
-## 12. Summary
+## 11. Summary
 
 The Bank Secure Network uses a **Cisco 2911 router** and **three Cisco 2960 switches** to connect Admin, Employee and ATM devices to the banking services and the Internet/Cloud. The network is **logically divided into four VLANs** — ADMIN (10), EMPLOYEE (20), ATM (30) and SERVER (40) — so that each group of devices is separated from the others. The **router provides controlled inter-VLAN communication**, and combined with **VLAN segmentation and ACL-based access control**, this gives the bank a structured, organized and security-oriented network design.
