@@ -97,7 +97,7 @@ This allows all four VLANs to communicate with each other (subject to ACL restri
 
 ---
 
-## ⚙️ Network Services
+##  Network Services
 
 | Service | Details |
 |---|---|
@@ -248,10 +248,10 @@ bank-secure-network/
 
 ##  Documentation
 
-- 📄 [Technical Documentation (PDF)](./documentation/Bank-Secure-Network-Documentation.pdf)
-- 📄 [Network Design](./documentation/Network-Design.md)
-- 📄 [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
-- 📄 [Documentation Index](./documentation/README.md)
+-  [Technical Documentation (PDF)](./documentation/Bank-Secure-Network-Documentation.pdf)
+-  [Network Design](./documentation/Network-Design.md)
+-  [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
+-  [Documentation Index](./documentation/README.md)
 
 ##  Presentation
 
