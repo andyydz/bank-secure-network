@@ -193,11 +193,6 @@ show running-config
 - `show ip interface <interface>` shows which ACL is applied to an interface and in which direction.
 - `show running-config` shows the complete configuration currently running on the router.
 
-**Screenshots**
-
-![ACL Verification](./images/acl-verification.png)
-
-> Replace or extend this placeholder with screenshots of the actual test results.
 
 ---
 
