@@ -1,4 +1,4 @@
-#  Bank Secure Network
+# Bank Secure Network
 
 A segmented, security-focused banking network designed and simulated in **Cisco Packet Tracer**, featuring VLAN segmentation, router-on-a-stick inter-VLAN routing, centralized DHCP/DNS, internal web services, and ACL-based network security.
 
@@ -10,17 +10,17 @@ A segmented, security-focused banking network designed and simulated in **Cisco 
 ![IPv4](https://img.shields.io/badge/Addressing-IPv4-F39C12?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
->  **Jump to:** [Overview](#-overview) · [Architecture](#️-network-architecture) · [VLAN/IP Plan](#-vlan--ip-addressing) · [Services](#️-network-services) · [Security](#-security-architecture) · [Testing](#-testing--verification) · [Screenshots](#-screenshots) · [Documentation](#-documentation) · [Presentation](#-presentation)
+> **Jump to:** [Overview](#-overview) · [Architecture](#️-network-architecture) · [VLAN/IP Plan](#-vlan--ip-addressing) · [Services](#️-network-services) · [Security](#-security-architecture) · [Testing](#-testing--verification) · [Screenshots](#-screenshots) · [Documentation](#-documentation) · [Presentation](#-presentation)
 
 ---
 
-##  Overview
+## Overview
 
 **Bank Secure Network** is a personal portfolio project simulating the core network infrastructure of a small bank branch. It was built end-to-end in Cisco Packet Tracer to demonstrate practical, hands-on experience with enterprise networking and network security fundamentals — from physical topology design through VLAN segmentation, routing, centralized services, and access control.
 
 The goal was to design a network where different types of banking traffic (administrative, employee, and ATM) are logically separated, routed correctly, and restricted from reaching resources they have no business need to access — while still allowing legitimate traffic (like access to the banking server) to flow.
 
-##  Problem Statement
+## Problem Statement
 
 A flat, unsegmented network is a liability in any environment handling sensitive data — and especially in banking. Without segmentation and access control:
 
@@ -30,7 +30,7 @@ A flat, unsegmented network is a liability in any environment handling sensitive
 
 This project addresses that problem by segmenting the network into functional VLANs and enforcing inter-VLAN access restrictions with ACLs, so that each segment can only reach what it legitimately needs.
 
-##  Objectives
+## Objectives
 
 - Design a segmented network topology reflecting realistic banking network zones (Admin, Employee, ATM, Server).
 - Implement VLAN segmentation with correctly assigned access ports.
@@ -44,7 +44,7 @@ This project addresses that problem by segmenting the network into functional VL
 
 ---
 
-##  Network Architecture
+## Network Architecture
 
 The network is built around a single multilayer point of routing (router-on-a-stick) connected via a trunk to a switching layer that fans out into four VLANs: Admin, Employee, ATM, and Server.
 
@@ -52,7 +52,7 @@ The network is built around a single multilayer point of routing (router-on-a-st
 
 *Bank Secure Network topology implemented in Cisco Packet Tracer.*
 
-##  Network Components
+## Network Components
 
 | Component | Quantity | Role |
 |---|---|---|
@@ -67,7 +67,7 @@ The network is built around a single multilayer point of routing (router-on-a-st
 
 ---
 
-##  VLAN & IP Addressing
+## VLAN & IP Addressing
 
 | VLAN | Name | Network | Gateway |
 |---|---|---|---|
@@ -83,21 +83,21 @@ The network is built around a single multilayer point of routing (router-on-a-st
 | BANKING-SERVER | 192.168.40.10 | 255.255.255.0 | 192.168.40.1 | 192.168.40.20 |
 | DNS/DHCP-SERVER | 192.168.40.20 | 255.255.255.0 | 192.168.40.1 | 192.168.40.20 |
 
- Full breakdown: [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
+Full breakdown: [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
 
 ---
 
-##  Routing Architecture
+## Routing Architecture
 
 Inter-VLAN routing is handled using **router-on-a-stick**: a single physical link from the Cisco 2911 router to the access-layer switch is configured as an 802.1Q trunk, with sub-interfaces created for each VLAN (10, 20, 30, 40) acting as that VLAN's default gateway.
 
 This allows all four VLANs to communicate with each other (subject to ACL restrictions below) and reach the DHCP/DNS and banking services on VLAN 40, without requiring a dedicated router interface per VLAN.
 
- Full breakdown: [Network Design](./documentation/Network-Design.md)
+Full breakdown: [Network Design](./documentation/Network-Design.md)
 
 ---
 
-##  Network Services
+## Network Services
 
 | Service | Details |
 |---|---|
@@ -115,13 +115,23 @@ This allows all four VLANs to communicate with each other (subject to ACL restri
 | EMPLOYEE | 192.168.20.1 | 192.168.40.20 | 192.168.20.10 | 255.255.255.0 |
 | ATM | 192.168.30.1 | 192.168.40.20 | 192.168.30.10 | 255.255.255.0 |
 
-**Relevant screenshots:** `dhcp-server.png`, `dhcp-client.png`, `dns-config.png`, `dns-test.png`, `banking-server.png`
+**Relevant screenshots:**
 
- Full breakdown: [Network Design](./documentation/Network-Design.md) · [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
+![DHCP Server Configuration](./screenshots/dhcp.png)
+
+![DHCP Client Address Assignment](./screenshots/dhcp-client.png)
+
+![DNS Configuration](./screenshots/dns.png)
+
+![DNS Resolution Test](./screenshots/dns-test.png)
+
+![Banking Server](./screenshots/banking-server.png)
+
+Full breakdown: [Network Design](./documentation/Network-Design.md) · [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
 
 ---
 
-##  Security Architecture
+## Security Architecture
 
 VLAN segmentation alone only separates broadcast domains — it does not stop routed traffic from crossing between them. ACLs were applied at the router to enforce **least-privilege access** between VLANs: each segment can reach only what it needs to, and nothing more.
 
@@ -132,7 +142,15 @@ VLAN segmentation alone only separates broadcast domains — it does not stop ro
 | `EMPLOYEE-SECURITY` | Employee (VLAN 20) → Admin (VLAN 10) traffic | Employee access to required services (e.g. Banking Server) |
 | `ATM-SECURITY` | ATM (VLAN 30) → Admin (VLAN 10) traffic; ATM (VLAN 30) → Employee (VLAN 20) traffic | ATM access to the Banking Server (VLAN 40) |
 
->  **Pending exact values:** The specific ACL statements (permit/deny lines, source/destination networks, applied interface, direction, and match counters) need to be filled in directly from your router configuration or the `acl-testing.png` screenshot output. Rather than guess these, this section should be updated with the literal `show access-lists` output and interface assignment once available, so the documentation stays 100% accurate to the implementation.
+> **Pending exact values:** The specific ACL statements (permit/deny lines, source/destination networks, applied interface, direction, and match counters) need to be filled in directly from your router configuration or the `acl-testing.png` screenshot output. Rather than guess these, this section should be updated with the literal `show access-lists` output and interface assignment once available, so the documentation stays 100% accurate to the implementation.
+
+![ACL Configuration](./screenshots/alc-config.png)
+
+![ACL Application 01](./screenshots/acl-application-01.png)
+
+![ACL Application 02](./screenshots/acl-application-02.png)
+
+![ACL Application 03](./screenshots/acl-application-03.png)
 
 ![ACL Testing](./screenshots/acl-testing.png)
 
@@ -140,7 +158,7 @@ VLAN segmentation alone only separates broadcast domains — it does not stop ro
 
 ---
 
-##  Testing & Verification
+## Testing & Verification
 
 The following tests were performed to validate connectivity, services, and security enforcement:
 
@@ -158,29 +176,33 @@ The following tests were performed to validate connectivity, services, and secur
 
 > These tests were reported as completed. The **Actual Result** and **Status** columns should be updated with the literal outcomes shown in `acl-testing.png`, `dhcp-client.png`, and `dns-test.png` once transcribed — this keeps the table verifiably accurate rather than assumed.
 
- Full evidence: [Screenshots](./screenshots/)
+Full evidence: [Screenshots](./screenshots/)
 
 ---
 
-##  Screenshots
+## Screenshots
 
 | Screenshot | Description |
 |---|---|
 | [`topology.png`](./screenshots/topology.png) | Full physical/logical network topology |
 | [`vlan-config.png`](./screenshots/vlan-config.png) | VLAN creation and access-port assignment |
 | [`trunk-config.png`](./screenshots/trunk-config.png) | 802.1Q trunk configuration between switches |
-| [`dhcp-server.png`](./screenshots/dhcp-server.png) | DHCP server pool configuration |
+| [`dhcp.png`](./screenshots/dhcp.png) | DHCP server pool configuration |
 | [`dhcp-client.png`](./screenshots/dhcp-client.png) | Client-side DHCP address assignment |
-| [`dns-config.png`](./screenshots/dns-config.png) | DNS server record configuration |
+| [`dns.png`](./screenshots/dns.png) | DNS server record configuration |
 | [`dns-test.png`](./screenshots/dns-test.png) | DNS resolution test (`banking.local`) |
 | [`banking-server.png`](./screenshots/banking-server.png) | Banking web server configuration/access |
+| [`alc-config.png`](./screenshots/alc-config.png) | ACL configuration |
+| [`acl-application-01.png`](./screenshots/acl-application-01.png) | ACL application evidence |
+| [`acl-application-02.png`](./screenshots/acl-application-02.png) | ACL application evidence |
+| [`acl-application-03.png`](./screenshots/acl-application-03.png) | ACL application evidence |
 | [`acl-testing.png`](./screenshots/acl-testing.png) | ACL configuration and traffic restriction testing |
 
- Browse all: [screenshots/](./screenshots/)
+Browse all: [screenshots/](./screenshots/)
 
 ---
 
-##  Technologies Used
+## Technologies Used
 
 | Category | Technology |
 |---|---|
@@ -193,39 +215,41 @@ The following tests were performed to validate connectivity, services, and secur
 
 ---
 
-##  Project Structure
+## Project Structure
 
-```
-bank-secure-network/
-│
-├── README.md
-│
-├── packet-tracer/
-│   ├── Bank-Secure-Network.pkt
-│   └── README.md
-│
-├── documentation/
-│   ├── Bank-Secure-Network-Documentation.pdf
-│   ├── Network-Design.md
-│   ├── IP-VLAN-Plan.md
-│   └── README.md
-│
-├── screenshots/
-│   ├── topology.png
-│   ├── vlan-config.png
-│   ├── trunk-config.png
-│   ├── dhcp-server.png
-│   ├── dhcp-client.png
-│   ├── dns-config.png
-│   ├── dns-test.png
-│   ├── banking-server.png
-│   ├── acl-testing.png
-│   └── README.md
-│
-└── presentation/
-    ├── Bank-Secure-Network.pptx
-    └── README.md
-```
+    bank-secure-network/
+    │
+    ├── README.md
+    │
+    ├── packet-tracer/
+    │   ├── Bank-Secure-Network.pkt
+    │   └── README.md
+    │
+    ├── documentation/
+    │   ├── Bank-Secure-Network-Documentation.pdf
+    │   ├── Network-Design.md
+    │   ├── IP-VLAN-Plan.md
+    │   └── README.md
+    │
+    ├── screenshots/
+    │   ├── topology.png
+    │   ├── vlan-config.png
+    │   ├── trunk-config.png
+    │   ├── dhcp.png
+    │   ├── dhcp-client.png
+    │   ├── dns.png
+    │   ├── dns-test.png
+    │   ├── banking-server.png
+    │   ├── alc-config.png
+    │   ├── acl-application-01.png
+    │   ├── acl-application-02.png
+    │   ├── acl-application-03.png
+    │   ├── acl-testing.png
+    │   └── README.md
+    │
+    └── presentation/
+        ├── Bank-Secure-Network.pptx
+        └── README.md
 
 - [📁 Packet Tracer](./packet-tracer/) — [`Bank-Secure-Network.pkt`](./packet-tracer/Bank-Secure-Network.pkt)
 - [📁 Documentation](./documentation/)
@@ -234,7 +258,7 @@ bank-secure-network/
 
 ---
 
-##  How to Open the Project
+## How to Open the Project
 
 1. Clone or download this repository.
 2. Install [Cisco Packet Tracer](https://www.netacad.com/courses/packet-tracer) if you don't already have it.
@@ -246,25 +270,25 @@ bank-secure-network/
 
 ---
 
-##  Documentation
+## Documentation
 
--  [Technical Documentation (PDF)](./documentation/Bank-Secure-Network-Documentation.pdf)
--  [Network Design](./documentation/Network-Design.md)
--  [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
--  [Documentation Index](./documentation/README.md)
+- [Technical Documentation (PDF)](./documentation/Bank-Secure-Network-Documentation.pdf)
+- [Network Design](./documentation/Network-Design.md)
+- [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
+- [Documentation Index](./documentation/README.md)
 
-##  Presentation
+## Presentation
 
--  [Presentation (PPTX)](./presentation/Bank-Secure-Network.pptx)
--  [Presentation README](./presentation/README.md)
+- [Presentation (PPTX)](./presentation/Bank-Secure-Network.pptx)
+- [Presentation README](./presentation/README.md)
 
 ---
 
-##  Project Information
+## Project Information
 
 This is an independent, self-directed portfolio project designed, configured, and tested end-to-end as a hands-on exercise in networking and network security fundamentals.
 
-##  Future Improvements
+## Future Improvements
 
 > The items below are **not implemented** — they are documented as planned future directions for the project.
 
@@ -276,6 +300,6 @@ This is an independent, self-directed portfolio project designed, configured, an
 - VPN connectivity for remote access
 - Improved server-side hardening
 
-##  Disclaimer
+## Disclaimer
 
 This project is an **educational simulation** built in Cisco Packet Tracer for learning and portfolio purposes only. It is **not** a production banking network and does not implement production-grade banking security controls. It should not be interpreted as representing enterprise-grade or regulatory-compliant banking infrastructure.
