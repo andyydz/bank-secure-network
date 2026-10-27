@@ -1,12 +1,12 @@
 # Bank Secure Network — IP Addressing & VLAN Plan
 
-> **Note:** This document records only the confirmed addressing information for the project. Any value that has not been specified is marked **TBD** (To Be Confirmed) rather than assumed.
+> **Document status:** This document records the IP addressing and VLAN plan documented for the Bank Secure Network project. It describes the planned addressing; it does not state that every host lease, network service or connectivity path has been independently verified. Individual client addresses are not specified here.
 
 ---
 
 ## 1. Overview
 
-The Bank Secure Network is a Computer Networks project designed and implemented in **Cisco Packet Tracer**. It connects administrative systems, employee systems, ATMs and banking services through a **Cisco 2911 router** and **three Cisco 2960 switches**.
+The Bank Secure Network is a Computer Networks project designed and implemented in **Cisco Packet Tracer**. It connects administrative systems, employee systems, ATMs and banking services through one **Cisco 2911 router** and **three Cisco 2960 switches**, using four VLANs.
 
 A structured IP addressing and VLAN plan is important for this network because it:
 
@@ -19,67 +19,59 @@ A structured IP addressing and VLAN plan is important for this network because i
 
 ## 2. VLAN Allocation
 
-| VLAN ID | VLAN Name | Purpose | Network Address | Default Gateway | Connected/Intended Devices |
-|:---:|---|---|---|---|---|
-| 10 | ADMIN | Administrative systems | TBD | `192.168.10.1` | Admin PCs |
-| 20 | EMPLOYEE | Employee systems | TBD | `192.168.20.1` | Employee PCs |
-| 30 | ATM | ATM systems | TBD | `192.168.30.1` | ATM PCs |
-| 40 | SERVER | Banking and network services | TBD | `192.168.40.1` | Banking/Web Server, DNS/DHCP Server |
+| VLAN ID | VLAN Name | Purpose | Network Address | Subnet Mask | Default Gateway | Connected/Intended Devices |
+|:---:|---|---|---|---|---|---|
+| 10 | ADMIN | Administrative systems | `192.168.10.0/24` | `255.255.255.0` | `192.168.10.1` | Admin PCs |
+| 20 | EMPLOYEE | Employee systems | `192.168.20.0/24` | `255.255.255.0` | `192.168.20.1` | Employee PCs |
+| 30 | ATM | ATM systems | `192.168.30.0/24` | `255.255.255.0` | `192.168.30.1` | ATM PCs |
+| 40 | SERVER | Banking and network services | `192.168.40.0/24` | `255.255.255.0` | `192.168.40.1` | Banking/Web Server, DNS/DHCP Server |
 
 ---
 
 ## 3. IP Addressing Scheme
 
-**Relationship between VLANs, subnets and gateways**
+**VLANs, subnets and gateways**
 
-- Each VLAN is a separate logical network, and each VLAN uses its **own IP subnet**.
-- Every subnet has a **default gateway**, which is the address that devices in that VLAN send traffic to when the destination is outside their own subnet.
-- The gateway addresses in this project follow a consistent pattern: the third octet matches the VLAN's position in the plan (`10`, `20`, `30`, `40`) and the gateway is the `.1` address of that block.
+- Each VLAN is a separate logical network and uses its **own IP subnet**.
+- Every subnet has a **default gateway**: the address that devices in that VLAN send traffic to when the destination is outside their own subnet. In this plan, the gateway is the `.1` address of each subnet.
+- The third octet identifies the VLAN (`10`, `20`, `30`, `40`), so the address of a device shows which group it belongs to.
 
-**Confirmed gateway addresses**
+**Reading the `/24` notation**
 
-| VLAN | Gateway |
-|---|---|
-| 10 (ADMIN) | `192.168.10.1` |
-| 20 (EMPLOYEE) | `192.168.20.1` |
-| 30 (ATM) | `192.168.30.1` |
-| 40 (SERVER) | `192.168.40.1` |
+- `/24` corresponds to the subnet mask `255.255.255.0`: the first three octets identify the network and the last octet identifies the host.
+- A subnet's **network address** (for example, `192.168.10.0`) identifies the subnet itself and is not assigned to an individual host.
 
-**Subnet masks and network addresses**
-
-The subnet mask has not been specified in the confirmed information, and the network address of each subnet depends on it. Because they cannot be derived with certainty from the gateway addresses alone, they are marked **TBD** in this document and must be confirmed against the project's configuration before being filled in.
-
-| VLAN | Subnet Mask | Network Address |
-|:---:|---|---|
-| 10 | TBD | TBD |
-| 20 | TBD | TBD |
-| 30 | TBD | TBD |
-| 40 | TBD | TBD |
+| VLAN | Network Address | Subnet Mask | Default Gateway |
+|:---:|---|---|---|
+| 10 (ADMIN) | `192.168.10.0/24` | `255.255.255.0` | `192.168.10.1` |
+| 20 (EMPLOYEE) | `192.168.20.0/24` | `255.255.255.0` | `192.168.20.1` |
+| 30 (ATM) | `192.168.30.0/24` | `255.255.255.0` | `192.168.30.1` |
+| 40 (SERVER) | `192.168.40.0/24` | `255.255.255.0` | `192.168.40.1` |
 
 ---
 
 ## 4. Server IP Allocation
 
-| Server | VLAN | IP Address | Status |
-|---|:---:|---|---|
-| DNS/DHCP Server | 40 | `192.168.40.20` | Confirmed |
-| Banking/Web Server | 40 | `TBD` | To be confirmed |
+Both servers are in VLAN 40 (SERVER) and use **static server addresses**, with subnet mask `255.255.255.0` and default gateway `192.168.40.1`.
 
-The Banking/Web Server address has not been specified and is left blank here to be completed once confirmed.
+| Server | VLAN | Static Server Address | Subnet Mask | Default Gateway |
+|---|:---:|---|---|---|
+| Banking/Web Server | 40 (SERVER) | `192.168.40.10` | `255.255.255.0` | `192.168.40.1` |
+| DNS/DHCP Server | 40 (SERVER) | `192.168.40.20` | `255.255.255.0` | `192.168.40.1` |
 
 ---
 
 ## 5. Device Addressing
 
-| Device Group | VLAN | IP Address | Default Gateway |
-|---|:---:|---|---|
-| Admin PCs | 10 | TBD | `192.168.10.1` |
-| Employee PCs | 20 | TBD | `192.168.20.1` |
-| ATM PCs | 30 | TBD | `192.168.30.1` |
-| DNS/DHCP Server | 40 | `192.168.40.20` | `192.168.40.1` |
-| Banking/Web Server | 40 | TBD | `192.168.40.1` |
+| Device Group | VLAN | Addressing | Subnet Mask | Default Gateway |
+|---|:---:|---|---|---|
+| Admin PCs | 10 (ADMIN) | Not individually specified; DHCP pool starting address `192.168.10.10` | `255.255.255.0` | `192.168.10.1` |
+| Employee PCs | 20 (EMPLOYEE) | Not individually specified; DHCP pool starting address `192.168.20.10` | `255.255.255.0` | `192.168.20.1` |
+| ATM PCs | 30 (ATM) | Not individually specified; DHCP pool starting address `192.168.30.10` | `255.255.255.0` | `192.168.30.1` |
+| Banking/Web Server | 40 (SERVER) | Static: `192.168.40.10` | `255.255.255.0` | `192.168.40.1` |
+| DNS/DHCP Server | 40 (SERVER) | Static: `192.168.40.20` | `255.255.255.0` | `192.168.40.1` |
 
-> Individual PC addresses have not been specified in the confirmed information, so no host addresses are listed for the client devices.
+> **Note on client addresses:** The DHCP pool starting addresses above are the documented first addresses of each pool. They are **not** the exact addresses assigned to individual clients, and this document does not list individual PC addresses, pool end addresses, exclusions or lease details.
 
 ---
 
@@ -92,7 +84,7 @@ The Banking/Web Server address has not been specified and is left blank here to 
 | 30 | ATM | ATM PCs |
 | 40 | SERVER | Banking/Web Server, DNS/DHCP Server |
 
-Network infrastructure devices (the Cisco 2911 router and the three Cisco 2960 switches) provide connectivity for all of these VLANs.
+The Cisco 2911 router and the three Cisco 2960 switches provide connectivity for all of these VLANs.
 
 ---
 
@@ -100,18 +92,20 @@ Network infrastructure devices (the Cisco 2911 router and the three Cisco 2960 s
 
 **Purpose of the gateways**
 
-Each VLAN has its own default gateway. A device sends any traffic destined for a different network, whether another VLAN or the Internet/Cloud, to the gateway of its own VLAN:
+A device sends any traffic destined for a different network, including another VLAN, to the default gateway of its own VLAN:
 
 | VLAN | Gateway | Used by |
 |:---:|---|---|
-| 10 | `192.168.10.1` | Admin PCs |
-| 20 | `192.168.20.1` | Employee PCs |
-| 30 | `192.168.30.1` | ATM PCs |
-| 40 | `192.168.40.1` | Banking/Web Server, DNS/DHCP Server |
+| 10 (ADMIN) | `192.168.10.1` | Admin PCs |
+| 20 (EMPLOYEE) | `192.168.20.1` | Employee PCs |
+| 30 (ATM) | `192.168.30.1` | ATM PCs |
+| 40 (SERVER) | `192.168.40.1` | Banking/Web Server, DNS/DHCP Server |
 
 **How inter-VLAN communication works**
 
-Devices in different VLANs cannot exchange traffic at Layer 2, so the **Cisco 2911 router** provides the Layer 3 connection between them. Traffic leaving a VLAN goes to that VLAN's gateway, and the router forwards it toward the destination VLAN. Because all inter-VLAN traffic passes through the router, communication between VLANs can be controlled rather than left unrestricted.
+The project uses **router-on-a-stick** inter-VLAN routing: the Cisco 2911 router provides the Layer 3 gateway for each VLAN, and traffic between VLANs is routed through it. Devices in different VLANs cannot exchange traffic at Layer 2, so VLAN separation alone does not stop inter-VLAN communication once routing is in place. Because all inter-VLAN traffic passes through the router, it can be controlled with ACLs.
+
+ACLs are applied on the router's Employee and ATM subinterfaces. They block specific flows and then explicitly permit other IPv4 traffic, so they do not block all inter-VLAN traffic. See [ACL Configuration & Security Implementation](acl-config.md) for the implemented rules, interface assignments, test evidence, and remaining unverified restrictions.
 
 ---
 
@@ -119,20 +113,18 @@ Devices in different VLANs cannot exchange traffic at Layer 2, so the **Cisco 29
 
 Admin, Employee, ATM and Server networks each use a **separate address space**. This supports the design in the following ways:
 
-- **Organization:** the address block of a device immediately shows which group it belongs to (for example, a `192.168.30.x` address belongs to the ATM network).
-- **Management:** each group has its own gateway, making the addressing easier to plan, document and troubleshoot.
-- **Security:** separate address spaces line up with the VLAN boundaries, so traffic between groups must pass through the router, where access between segments can be controlled.
-- **Isolation of critical services:** banking and network services have their own address space, separate from user and ATM devices.
+- **Organization:** the address block of a device shows which group it belongs to (for example, a `192.168.30.x` address belongs to the ATM network).
+- **Management:** each group has its own subnet and gateway, making the addressing easier to plan, document and troubleshoot.
+- **Segmentation:** separate address spaces line up with the VLAN boundaries, so traffic between groups passes through the router, where it can be filtered by ACLs.
+- **Separation of services:** banking and network services have their own subnet, separate from user and ATM devices.
 
 ---
 
 ## 9. IP & VLAN Summary
 
-Values marked **TBD** have not been confirmed.
-
-| VLAN ID | VLAN Name | Purpose | Default Gateway | Network / Mask | Devices | Known Device IPs |
-|:---:|---|---|---|:---:|---|---|
-| 10 | ADMIN | Administrative systems | `192.168.10.1` | TBD | Admin PCs | TBD |
-| 20 | EMPLOYEE | Employee systems | `192.168.20.1` | TBD | Employee PCs | TBD |
-| 30 | ATM | ATM systems | `192.168.30.1` | TBD | ATM PCs | TBD |
-| 40 | SERVER | Banking and network services | `192.168.40.1` | TBD | Banking/Web Server, DNS/DHCP Server | DNS/DHCP: `192.168.40.20`; Banking/Web: TBD |
+| VLAN ID | VLAN Name | Purpose | Network Address | Subnet Mask | Default Gateway | Devices | Known Addresses |
+|:---:|---|---|---|---|---|---|---|
+| 10 | ADMIN | Administrative systems | `192.168.10.0/24` | `255.255.255.0` | `192.168.10.1` | Admin PCs | DHCP pool starting address: `192.168.10.10` |
+| 20 | EMPLOYEE | Employee systems | `192.168.20.0/24` | `255.255.255.0` | `192.168.20.1` | Employee PCs | DHCP pool starting address: `192.168.20.10` |
+| 30 | ATM | ATM systems | `192.168.30.0/24` | `255.255.255.0` | `192.168.30.1` | ATM PCs | DHCP pool starting address: `192.168.30.10` |
+| 40 | SERVER | Banking and network services | `192.168.40.0/24` | `255.255.255.0` | `192.168.40.1` | Banking/Web Server, DNS/DHCP Server | Static: Banking/Web `192.168.40.10`; DNS/DHCP `192.168.40.20` |
