@@ -4,7 +4,7 @@ This folder contains the presentation prepared for the **Bank Secure Network** a
 
 ## Presentation
 
-`Bank-Secure-Network.pptx`
+`Bank-Secure-Network-Documentation.pdf`
 
 The presentation provides a summarized overview of:
 
