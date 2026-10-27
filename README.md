@@ -233,7 +233,7 @@ bank-secure-network/
 │   ├── acl-config.md
 │   ├── IP-VLAN-Plan.md
 │   ├── Network-Design.md
-│   └── README.md
+│   └── readme.md
 │
 ├── screenshots/
 │   ├── topology.png
@@ -251,10 +251,10 @@ bank-secure-network/
 │   ├── acl-testing.png
 │   ├── employee-acl-connectivity-test.png
 │   ├── employee-acl-counter-verification.png
-│   └── README.md
+│   └── readme.md
 │
 └── presentation/
-    └── README.md
+    └── readme.md
 ```
 
 - [📁 Packet Tracer](./packet-tracer/) — [`Bank-Secure-Network-FINAL.pkt`](./packet-tracer/Bank-Secure-Network-FINAL.pkt)
@@ -281,12 +281,12 @@ bank-secure-network/
 - [ACL Configuration & Security Implementation](./documentation/acl-config.md)
 - [IP & VLAN Plan](./documentation/IP-VLAN-Plan.md)
 - [Network Design](./documentation/Network-Design.md)
-- [Documentation Index](./documentation/README.md)
+- [Documentation Index](./documentation/readme.md)
 - [Packet Tracer Instructions](./packet-tracer/readme.md)
 
 ## Presentation
 
-The [`presentation/`](./presentation/) directory currently contains only a [README](./presentation/README.md); no presentation file (such as a PPTX) is included in the repository at this time.
+The [`presentation/`](./presentation/) directory currently contains only a [README](./presentation/readme.md); no presentation file (such as a PPTX) is included in the repository at this time.
 
 ---
 
