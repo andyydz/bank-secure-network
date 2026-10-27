@@ -1,71 +1,67 @@
 # Cisco Packet Tracer Project
 
-This folder contains the complete Cisco Packet Tracer simulation of the **Bank Secure Network**.
+This folder contains the Cisco Packet Tracer simulation of the **Bank Secure Network**, an educational networking project. It is a classroom-style simulation, not a production banking network.
 
 ## File
 
-`Bank-Secure-Network.pkt`
+`Bank-Secure-Network-FINAL.pkt`
 
-The `.pkt` file contains the complete network topology and device configurations.
+The file is located in this `packet-tracer/` directory and contains the network topology and device configurations.
 
 ## Network Components
 
-The simulation includes:
-
 - Cisco 2911 Router
-- Cisco 2960 Switches
-- Administrative PCs
+- Three Cisco 2960 Switches
+- Admin PCs
 - Employee PCs
-- ATMs
+- ATM PCs
 - Banking Server
 - DNS/DHCP Server
-- Internet/Cloud connection
 
-## Network Configuration
+## Documented Configuration
 
-The Packet Tracer project implements:
+The simulation is designed around the following features:
 
 - VLAN segmentation
 - 802.1Q trunking
-- Router-on-a-stick
-- Inter-VLAN routing
-- DHCP
-- DHCP relay
+- Router-on-a-stick inter-VLAN routing
+- DHCP and DHCP relay
 - DNS
 - HTTP
 - Access Control Lists (ACLs)
 
+This list describes the documented design. It does not mean every feature or connectivity path has been independently tested (see [ACL Testing Status](#acl-testing-status)).
+
 ## VLANs
 
-| VLAN | Name | Network |
-|------|------|---------|
-| 10 | ADMIN | 192.168.10.0/24 |
-| 20 | EMPLOYEE | 192.168.20.0/24 |
-| 30 | ATM | 192.168.30.0/24 |
-| 40 | SERVER | 192.168.40.0/24 |
+| VLAN | Name | Network | Default Gateway |
+|------|------|---------|-----------------|
+| 10 | ADMIN | `192.168.10.0/24` | `192.168.10.1` |
+| 20 | EMPLOYEE | `192.168.20.0/24` | `192.168.20.1` |
+| 30 | ATM | `192.168.30.0/24` | `192.168.30.1` |
+| 40 | SERVER | `192.168.40.0/24` | `192.168.40.1` |
 
 ## Server Addressing
 
-| Device | IP Address |
-|--------|------------|
-| Banking Server | 192.168.40.10 |
-| DNS/DHCP Server | 192.168.40.20 |
+| Device | VLAN | IP Address |
+|--------|:----:|------------|
+| Banking Server | 40 | `192.168.40.10` |
+| DNS/DHCP Server | 40 | `192.168.40.20` |
+
+## ACL Testing Status
+
+The verified ACL rules, interface assignments and test evidence are documented in [ACL Configuration & Security Implementation](../documentation/acl-config.md).
+
+- **Tested:** the Employee-to-Admin restriction, and ping from an Employee PC to the Banking Server.
+- **Configured, not yet independently tested:** the ATM-to-Admin and ATM-to-Employee restrictions.
+
+No other service or connectivity path is claimed as verified here.
 
 ## Usage
 
-Open the `.pkt` file using **Cisco Packet Tracer**.
-
-The project can be used to inspect:
-
-- Device configurations
-- VLAN configuration
-- Routing
-- DHCP
-- DNS
-- Server services
-- ACL rules
-- Network connectivity
+1. Open `Bank-Secure-Network-FINAL.pkt` (in this `packet-tracer/` folder) with **Cisco Packet Tracer**.
+2. Use it to inspect the device configurations, VLANs, routing, DHCP, DNS, server services, ACL rules and connectivity.
 
 ## Note
 
-The `.pkt` file represents an academic network simulation and should be opened using a compatible version of Cisco Packet Tracer.
+The `.pkt` file is an academic simulation and should be opened with a compatible version of Cisco Packet Tracer.
